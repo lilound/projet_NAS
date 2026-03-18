@@ -89,11 +89,6 @@ def configure_router(node, router_name, router_info):
         send(tn, f" {net}")
     send(tn, " exit")
 
-    # MPLS LDP
-    if data.get("mpls", {}).get("ldp"):
-        send(tn, "mpls label protocol ldp")
-        send(tn, "mpls ldp router-id Loopback0 force")
-
     # fin
     send(tn, "end")
     send(tn, "write memory")
