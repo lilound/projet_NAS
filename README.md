@@ -22,7 +22,7 @@ mpls ajouter label au pe entrée et enlever à l'avant dernier routeur (dernier 
 1. Installer Python 3.11
 
 Télécharger Python 3.11 :
-https://www.python.org/downloads/release/python-311/
+https://www.python.org/downloads/release/python-3110/
 
 Pendant l’installation, cocher “Add Python to PATH”
 
