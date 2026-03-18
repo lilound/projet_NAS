@@ -1,0 +1,100 @@
+{
+  "AS": {
+    "CORE": {
+      "igp": "OSPF",
+      "nom_process": "CORE",
+      "asnumber": "65000",
+      "network": "10.0.0.0/16"
+    }
+  },
+
+  "routeurs": {
+    "PE1": {
+      "as": "CORE",
+      "loopback": "1.1.1.1/32",
+      "routeurID": "1.1.1.1",
+      "type": "PE"
+    },
+    "P1": {
+      "as": "CORE",
+      "loopback": "2.2.2.2/32",
+      "routeurID": "2.2.2.2",
+      "type": "P"
+    },
+    "P2": {
+      "as": "CORE",
+      "loopback": "3.3.3.3/32",
+      "routeurID": "3.3.3.3",
+      "type": "P"
+    },
+    "P3": {
+      "as": "CORE",
+      "loopback": "4.4.4.4/32",
+      "routeurID": "4.4.4.4",
+      "type": "P"
+    },
+    "PE2": {
+      "as": "CORE",
+      "loopback": "5.5.5.5/32",
+      "routeurID": "5.5.5.5",
+      "type": "PE"
+    }
+  },
+
+  "links": [
+    {
+      "routeur_a": "PE1",
+      "interface_a": "GigabitEthernet2/0",
+      "routeur_b": "P1",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "10.0.12.0/30"
+    },
+    {
+      "routeur_a": "P1",
+      "interface_a": "GigabitEthernet2/0",
+      "routeur_b": "P2",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "10.0.23.0/30"
+    },
+    {
+      "routeur_a": "P2",
+      "interface_a": "GigabitEthernet2/0",
+      "routeur_b": "PE2",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "10.0.24.0/30"
+    },
+    {
+      "routeur_a": "PE1",
+      "interface_a": "GigabitEthernet3/0",
+      "routeur_b": "P3",
+      "interface_b": "GigabitEthernet2/0",
+      "sous_res": "10.0.13.0/30"
+    },
+    {
+      "routeur_a": "P3",
+      "interface_a": "GigabitEthernet1/0",
+      "routeur_b": "PE2",
+      "interface_b": "GigabitEthernet2/0",
+      "sous_res": "10.0.34.0/30"
+    }
+  ],
+
+  "addressing": {
+    "loopbacks": {
+      "PE1": "1.1.1.1/32",
+      "P1": "2.2.2.2/32",
+      "P2": "3.3.3.3/32",
+      "P3": "4.4.4.4/32",
+      "PE2": "5.5.5.5/32"
+    }
+  },
+
+  "mpls": {
+    "ldp": true,
+    "router_id": "loopback",
+    "interfaces": "core_only",
+    "php": true
+  },
+
+  "policies": {}
+}
