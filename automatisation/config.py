@@ -1,46 +1,116 @@
 import json
+import time
+import telnetlib
+from gns3fy import Gns3Connector, Project, Node
 
-with open ("intent.json", "r") as f:
-    intent_json = f.read()
+GNS3_URL = "http://127.0.0.1:3080"
+TELNET_DELAY = 0.3
 
-data = json.loads(intent_json)
+with open("intent.json", "r") as f:
+    data = json.load(f)
 
-for router_name, router_info in data["routeurs"].items():
-    config = []
-    config.append(f"hostname {router_name}")
-    
+server = Gns3Connector(url=GNS3_URL)
+project = Project(name="structure_vide", connector=server)
+project.get()
+project.open()
+project.get_nodes()
+
+
+# utils
+
+def send(tn, cmd):
+    tn.write((cmd + "\r\n").encode("ascii"))
+    time.sleep(TELNET_DELAY)
+
+
+def ensure_started(node):
+    node.get()
+    if node.status != "started":
+        node.start()
+        time.sleep(2)
+
+
+# config routeur
+
+def configure_router(node, router_name, router_info):
+    tn = telnetlib.Telnet(node.console_host, node.console)
+    time.sleep(1)
+
+    send(tn, "")
+    send(tn, "enable")
+    send(tn, "configure terminal")
+
+    # hostname
+    send(tn, f"hostname {router_name}")
+
+    # CEF obligatoire MPLS
+    send(tn, "ip cef")
+
+    # loopback
     lb_ip = router_info["loopback"].split('/')[0]
-    config.append("interface Loopback0")
-    config.append(f" ip address {lb_ip} 255.255.255.255")
-    config.append(" exit")
-    
+    send(tn, "interface Loopback0")
+    send(tn, f" ip address {lb_ip} 255.255.255.255")
+    send(tn, " no shutdown")
+    send(tn, " exit")
+
     ospf_networks = [f"network {lb_ip} 0.0.0.0 area 0"]
-    
+
+    # interfaces
     for link in data["links"]:
         if link["routeur_a"] == router_name:
-            iface, local_ip = link["interface_a"], link["sous_res"].replace(".0/30", ".1")
+            iface = link["interface_a"]
+            local_ip = link["sous_res"].replace(".0/30", ".1")
             net_addr = link["sous_res"].split('/')[0]
+
         elif link["routeur_b"] == router_name:
-            iface, local_ip = link["interface_b"], link["sous_res"].replace(".0/30", ".2")
+            iface = link["interface_b"]
+            local_ip = link["sous_res"].replace(".0/30", ".2")
             net_addr = link["sous_res"].split('/')[0]
+
         else:
             continue
-            
-        config.append(f"interface {iface}")
-        config.append(f" ip address {local_ip} 255.255.255.252")
-        if data["mpls"]["ldp"]:
-            config.append(" mpls ip")
-        config.append(" no shutdown")
-        config.append(" exit")
-        
+
+        send(tn, f"interface {iface}")
+        send(tn, f" ip address {local_ip} 255.255.255.252")
+
+        # MPLS si activé
+        if data.get("mpls", {}).get("ldp"):
+            send(tn, " mpls ip")
+
+        send(tn, " no shutdown")
+        send(tn, " exit")
+
         ospf_networks.append(f" network {net_addr} 0.0.0.3 area 0")
 
-    # Configuration OSPF
-    config.append("router ospf 1")
-    config.append(f" router-id {router_info['routeurID']}")
-    config.extend(ospf_networks)
-    config.append(" end\n")
+    # OSPF
+    send(tn, "router ospf 1")
+    send(tn, f" router-id {router_info['routeurID']}")
+    for net in ospf_networks:
+        send(tn, f" {net}")
+    send(tn, " exit")
 
-    # Affichage du résultat pour chaque routeur
-    print(f"--- CONFIGURATION POUR {router_name} ---")
-    print("\n".join(config))
+    # MPLS LDP
+    if data.get("mpls", {}).get("ldp"):
+        send(tn, "mpls label protocol ldp")
+        send(tn, "mpls ldp router-id Loopback0 force")
+
+    # fin
+    send(tn, "end")
+    send(tn, "write memory")
+
+    tn.close()
+
+
+def main():
+    for router_name, router_info in data["routeurs"].items():
+        node = Node(project_id=project.project_id, name=router_name, connector=server)
+        node.get()
+
+        ensure_started(node)
+
+        configure_router(node, router_name, router_info)
+
+    print("Configuration MPLS terminée.")
+
+if __name__ == "__main__":
+    main()
