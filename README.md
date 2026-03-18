@@ -17,3 +17,29 @@ mpls ajouter label au pe entrée et enlever à l'avant dernier routeur (dernier 
 * faire IPV6 instead of IPV4 
 * add QoS
 
+# TUTOOOOO
+
+1. Installer Python 3.11
+
+Télécharger Python 3.11 :
+https://www.python.org/downloads/release/python-311/
+
+Pendant l’installation, cocher “Add Python to PATH”
+
+Vérifier :
+
+py -3.11 --version
+
+2. Installer les dépendances
+py -3.11 -m pip install gns3fy
+
+3. Préparer GNS3
+
+Ouvrir structure_vide
+
+!["](topologie.png "")
+
+5. Lancer le script
+
+Dans le dossier automatisation :
+py -3.11 config.py
