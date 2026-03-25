@@ -43,3 +43,7 @@ Ouvrir structure_vide
 
 Dans le dossier automatisation :
 py -3.11 config.py
+
+
+### petit conseil de pfr
+ attention, la reachability au client doit être entière : souvent les élèves se trompent et n'assurent QUE la connexion au premier lien du CE : donc bien vérifier que ça ping DANS le CE (depuis qqch qui est le PE)

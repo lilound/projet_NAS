@@ -37,6 +37,7 @@ def configure_router(node, router_name, router_info):
     time.sleep(1)
 
     send(tn, "")
+    send(tn, "no")
     send(tn, "enable")
     send(tn, "configure terminal")
 
@@ -104,6 +105,8 @@ def main():
         ensure_started(node)
 
         configure_router(node, router_name, router_info)
+
+        print(f"Config routeur {router_name} terminée")
 
     print("Configuration MPLS terminée.")
 
