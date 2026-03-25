@@ -99,7 +99,12 @@ def configure_router(node, router_name, router_info):
 
     # fin
     send(tn, "end")
+<<<<<<< HEAD
     ##send(tn, "write memory")
+=======
+    send(tn, "write memory")
+    send(tn, "y")
+>>>>>>> e223bd32a371a9fc4886e23750b4b41fe07b6088
 
     tn.close()
 
