@@ -5,6 +5,21 @@
       "nom_process": "CORE",
       "asnumber": "65000",
       "network": "10.0.0.0/16"
+    },
+    "CLIENT_A": {
+      "igp" : "OSPF",
+      "nom_process" : "CLIENT_A",
+      "asnumber": "65010",
+      "network": "11.0.0.0/16"
+
+
+    },
+    "CLIENT_B":{
+      "igp" : "OSPF",
+      "nom_process" : "CLIENT_B",
+      "asnumber" : "65020",
+      "network": "12.0.0.0/16"
+
     }
   },
 
@@ -38,6 +53,30 @@
       "loopback": "5.5.5.5/32",
       "routeurID": "5.5.5.5",
       "type": "PE"
+    },
+    "CE1": {
+      "as": "CLIENT_A",
+      "loopback": "11.11.11.11/32",
+      "routeurID": "11.11.11.11",
+      "type": "CE"
+    },
+    "CE2": {
+        "as": "CLIENT_A",
+        "loopback": "12.12.12.12/32",
+        "routeurID": "12.12.12.12",
+        "type": "CE"
+    },
+    "CE3": {
+        "as": "CLIENT_B",
+        "loopback": "23.23.23.23/32",
+        "routeurID": "23.23.23.23",
+        "type": "CE"
+    },
+    "CE4": {
+        "as": "CLIENT_B",
+        "loopback": "24.24.24.24/32",
+        "routeurID": "24.24.24.24",
+        "type": "CE"
     }
   },
 
@@ -76,6 +115,34 @@
       "routeur_b": "PE2",
       "interface_b": "GigabitEthernet2/0",
       "sous_res": "10.0.34.0/30"
+    },
+    {
+      "routeur_a": "PE1",
+      "interface_a": "GigabitEthernet1/0",
+      "routeur_b": "CE1",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "11.0.0.0/30"
+    },
+    {
+      "routeur_a": "PE1",
+      "interface_a": "FastEthernet0/0",
+      "routeur_b": "CE3",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "12.0.0.0/30"
+    },
+    {
+      "routeur_a": "PE2",
+      "interface_a": "GigabitEthernet3/0",
+      "routeur_b": "CE2",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "11.1.0.0/30"
+    },
+    {
+      "routeur_a": "PE2",
+      "interface_a": "FastEthernet0/0",
+      "routeur_b": "CE4",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "12.1.0.0/30"
     }
   ],
 
@@ -85,7 +152,11 @@
       "P1": "2.2.2.2/32",
       "P2": "3.3.3.3/32",
       "P3": "4.4.4.4/32",
-      "PE2": "5.5.5.5/32"
+      "PE2": "5.5.5.5/32",
+      "CE1" : "11.11.11.11/32",
+      "CE2" : "12.12.12.12/32",
+      "CE3" : "23.23.23.23/32",
+      "CE4" : "24.24.24.24/32"
     }
   },
 

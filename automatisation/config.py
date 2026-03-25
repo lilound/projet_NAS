@@ -2,6 +2,7 @@ import json
 import time
 import telnetlib
 from gns3fy import Gns3Connector, Project, Node
+from concurrent.futures import ThreadPoolExecutor
 
 GNS3_URL = "http://127.0.0.1:3080"
 TELNET_DELAY = 0.3
@@ -30,14 +31,20 @@ def ensure_started(node):
         time.sleep(2)
 
 
+
+
 # config routeur
+
+
 
 def configure_router(node, router_name, router_info):
     tn = telnetlib.Telnet(node.console_host, node.console)
-    time.sleep(1)
+    time.sleep(10)
 
     send(tn, "")
     send(tn, "no")
+    send(tn, "\n")
+    time.sleep(10)
     send(tn, "enable")
     send(tn, "configure terminal")
 
@@ -97,19 +104,27 @@ def configure_router(node, router_name, router_info):
 
     tn.close()
 
+def configure_worker(router_name, router_info):
+    node = Node(project_id=project.project_id, name=router_name, connector=server)
+    node.get()
+
+    ensure_started(node)
+    configure_router(node, router_name, router_info)
+
+    print(f"Config routeur {router_name} terminée")
+
 
 def main():
-    for router_name, router_info in data["routeurs"].items():
-        node = Node(project_id=project.project_id, name=router_name, connector=server)
-        node.get()
+    max_threads = 5 
 
-        ensure_started(node)
-
-        configure_router(node, router_name, router_info)
-
-        print(f"Config routeur {router_name} terminée")
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
+        for router_name, router_info in data["routeurs"].items():
+            executor.submit(configure_worker, router_name, router_info)
+            time.sleep(0.5)
 
     print("Configuration MPLS terminée.")
+
+
 
 if __name__ == "__main__":
     main()
