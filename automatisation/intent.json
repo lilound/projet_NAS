@@ -5,6 +5,17 @@
       "nom_process": "CORE",
       "asnumber": "65000",
       "network": "10.0.0.0/16"
+    },
+    "CLIENT_A": {
+      "igp" : "OSPF",
+      "nom_process" : "CLIENT_A",
+      "asnumber": "65010"
+
+    },
+    "CLIENT_B":{
+      "igp" : "OSPF",
+      "nom_process" : "CLIENT_B",
+      "asnumber" : "65020"
     }
   },
 
