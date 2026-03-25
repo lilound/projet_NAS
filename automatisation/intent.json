@@ -82,6 +82,7 @@
 
   "links": [
     {
+      "type" : "core",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "P1",
@@ -89,6 +90,7 @@
       "sous_res": "10.0.12.0/30"
     },
     {
+      "type" : "core",
       "routeur_a": "P1",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "P2",
@@ -96,6 +98,7 @@
       "sous_res": "10.0.23.0/30"
     },
     {
+      "type" : "core",
       "routeur_a": "P2",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "PE2",
@@ -103,6 +106,7 @@
       "sous_res": "10.0.24.0/30"
     },
     {
+      "type" : "core",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "P3",
@@ -110,6 +114,7 @@
       "sous_res": "10.0.13.0/30"
     },
     {
+      "type" : "core",
       "routeur_a": "P3",
       "interface_a": "GigabitEthernet1/0",
       "routeur_b": "PE2",
@@ -117,6 +122,8 @@
       "sous_res": "10.0.34.0/30"
     },
     {
+      "type" : "pe-ce",
+      "vrf": "CLIENT_A",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet1/0",
       "routeur_b": "CE1",
@@ -124,6 +131,8 @@
       "sous_res": "11.0.0.0/30"
     },
     {
+      "type" : "pe-ce",
+      "vrf": "CLIENT_A",
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE3",
@@ -131,6 +140,8 @@
       "sous_res": "12.0.0.0/30"
     },
     {
+      "type" : "pe-ce",
+      "vrf": "CLIENT_B",
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "CE2",
@@ -138,6 +149,8 @@
       "sous_res": "11.1.0.0/30"
     },
     {
+      "type" : "pe-ce",
+      "vrf": "CLIENT_B",
       "routeur_a": "PE2",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE4",
@@ -167,5 +180,18 @@
     "php": true
   },
 
+  "vrfs":{
+    "CLIENT_A": {
+        "rd": "65000:10",
+        "rt_export": "65000:10",
+        "rt_import": "65000:10"
+    },
+    "CLIENT_B": {
+        "rd": "65000:20",
+        "rt_export": "65000:20",
+        "rt_import": "65000:20"
+    }
+  },
+  
   "policies": {}
 }
