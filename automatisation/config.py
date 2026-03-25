@@ -107,24 +107,18 @@ def get_pe_vrfs(pe_name):
     return sorted(vrfs)
 
 
-def rd_for(pe_name, vrf_name):
-    # PE1 -> rd se terminant par 0, PE2 -> rd se terminant par 1
-    pe_offset = 0 if pe_name == "PE1" else 1
-
-    if vrf_name == "CLIENT_A":
-        return f"100:{10 + pe_offset}"
-    if vrf_name == "CLIENT_B":
-        return f"100:{20 + pe_offset}"
-
-    return f"100:{100 + pe_offset}"
+def rd_for(vrf_name):
+    for name, vrf in data["vrfs"].items():
+        if name == vrf_name:
+            return vrf["rd"]
+    return "65000:100"
 
 
 def rt_for(vrf_name):
-    if vrf_name == "CLIENT_A":
-        return "100:10"
-    if vrf_name == "CLIENT_B":
-        return "100:20"
-    return "100:100"
+    for name, vrf in data["vrfs"].items():
+        if name == vrf_name:
+            return vrf["rt_export"]
+    return "65000:100"
 
 
 def clear_prompt(tn):
