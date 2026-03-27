@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 GNS3_URL = "http://127.0.0.1:3080"
 TELNET_DELAY = 0.3
-PROJECT_NAME = "structure_vide"
+PROJECT_NAME = "structure_vide_V2"
 
 with open("intent.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -114,10 +114,15 @@ def rd_for(vrf_name):
 
 
 def rt_for(vrf_name):
-    for name, vrf in data["vrfs"].items():
-        if name == vrf_name:
-            return vrf["rt_export"]
-    return "65000:100"
+    vrf = data["vrfs"][vrf_name]
+
+    rt_export = vrf["rt_export"]
+    rt_import = vrf["rt_import"]
+
+    if not isinstance(rt_import, list):
+        rt_import = [rt_import]
+
+    return rt_export, rt_import
 
 
 def clear_prompt(tn):
@@ -177,12 +182,16 @@ def configure_core_igp_and_mpls(tn, router_name):
 def configure_pe_vrfs(tn, router_name):
     for vrf_name in get_pe_vrfs(router_name):
         rd = rd_for(vrf_name)
-        rt = rt_for(vrf_name)
+        rt_export, rt_imports = rt_for(vrf_name)
 
         send(tn, f"vrf definition {vrf_name}")
         send(tn, f" rd {rd}")
-        send(tn, f" route-target export {rt}")
-        send(tn, f" route-target import {rt}")
+
+        send(tn, f" route-target export {rt_export}")
+
+        for rt in rt_imports:
+            send(tn, f" route-target import {rt}")
+
         send(tn, " address-family ipv4")
         send(tn, " exit-address-family")
         send(tn, " exit")

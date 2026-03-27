@@ -4,13 +4,11 @@
   },
   "AS": {
     "CORE": {
-      "igp": "OSPF",
       "nom_process": "CORE",
       "asnumber": "65000",
       "network": "10.0.0.0/16"
     },
     "CLIENT_A": {
-      "igp" : "OSPF",
       "nom_process" : "CLIENT_A",
       "asnumber": "65010",
       "network": "11.0.0.0/16"
@@ -18,10 +16,17 @@
 
     },
     "CLIENT_B":{
-      "igp" : "OSPF",
       "nom_process" : "CLIENT_B",
       "asnumber" : "65020",
       "network": "12.0.0.0/16"
+    
+    },
+
+    "CLIENT_C":{
+      "nom_process" : "CLIENT_C",
+      "asnumber" : "65030",
+      "network": "13.0.0.0/16"
+    
 
     }
   },
@@ -80,6 +85,12 @@
         "loopback": "24.24.24.24/32",
         "routeurID": "24.24.24.24",
         "type": "CE"
+    },
+    "CE5" : {
+      "as" : "CLIENT_C",
+      "loopback" : "35.35.35.35/32",
+      "routeurID": "35.35.35.35",
+      "type":"CE"
     }
   },
 
@@ -128,12 +139,7 @@
       "sous_res": "11.0.0.0/30"
     },
     {
-<<<<<<< HEAD
-      "vrf": "CLIENT_A",
-=======
-      "type" : "pe-ce",
       "vrf": "CLIENT_B",
->>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE3",
@@ -141,12 +147,7 @@
       "sous_res": "12.0.0.0/30"
     },
     {
-<<<<<<< HEAD
-      "vrf": "CLIENT_B",
-=======
-      "type" : "pe-ce",
       "vrf": "CLIENT_A",
->>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "CE2",
@@ -160,6 +161,14 @@
       "routeur_b": "CE4",
       "interface_b": "GigabitEthernet1/0",
       "sous_res": "12.1.0.0/30"
+    },
+    {
+      "vrf": "CLIENT_C",
+      "routeur_a" : "PE1",
+      "interface_a": "GigabitEthernet4/0",
+      "routeur_b" : "CE5",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "13.1.0.0/30"
     }
   ],
 
@@ -173,7 +182,8 @@
       "CE1" : "11.11.11.11/32",
       "CE2" : "12.12.12.12/32",
       "CE3" : "23.23.23.23/32",
-      "CE4" : "24.24.24.24/32"
+      "CE4" : "24.24.24.24/32",
+      "CE5" : "35.35.35.35/32"
     }
   },
 
@@ -188,13 +198,19 @@
     "CLIENT_A": {
         "rd": "65000:10",
         "rt_export": "65000:10",
-        "rt_import": "65000:10"
+        "rt_import": ["65000:10","65000:30"]
     },
     "CLIENT_B": {
         "rd": "65000:20",
         "rt_export": "65000:20",
-        "rt_import": "65000:20"
+        "rt_import": ["65000:20","65000:30"]
+    },
+    "CLIENT_C": {
+        "rd": "65000:30",
+        "rt_export": "65000:30",
+        "rt_import": ["65000:10","65000:20"]
     }
+
   },
   
   "policies": {}
