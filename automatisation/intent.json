@@ -86,7 +86,6 @@
 
   "links": [
     {
-      "type" : "core",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "P1",
@@ -94,7 +93,6 @@
       "sous_res": "10.0.12.0/30"
     },
     {
-      "type" : "core",
       "routeur_a": "P1",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "P2",
@@ -102,7 +100,6 @@
       "sous_res": "10.0.23.0/30"
     },
     {
-      "type" : "core",
       "routeur_a": "P2",
       "interface_a": "GigabitEthernet2/0",
       "routeur_b": "PE2",
@@ -110,7 +107,6 @@
       "sous_res": "10.0.24.0/30"
     },
     {
-      "type" : "core",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "P3",
@@ -118,7 +114,6 @@
       "sous_res": "10.0.13.0/30"
     },
     {
-      "type" : "core",
       "routeur_a": "P3",
       "interface_a": "GigabitEthernet1/0",
       "routeur_b": "PE2",
@@ -126,7 +121,6 @@
       "sous_res": "10.0.34.0/30"
     },
     {
-      "type" : "pe-ce",
       "vrf": "CLIENT_A",
       "routeur_a": "PE1",
       "interface_a": "GigabitEthernet1/0",
@@ -135,8 +129,12 @@
       "sous_res": "11.0.0.0/30"
     },
     {
+<<<<<<< HEAD
+      "vrf": "CLIENT_A",
+=======
       "type" : "pe-ce",
       "vrf": "CLIENT_B",
+>>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE3",
@@ -144,8 +142,12 @@
       "sous_res": "12.0.0.0/30"
     },
     {
+<<<<<<< HEAD
+      "vrf": "CLIENT_B",
+=======
       "type" : "pe-ce",
       "vrf": "CLIENT_A",
+>>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "CE2",
@@ -153,7 +155,6 @@
       "sous_res": "11.1.0.0/30"
     },
     {
-      "type" : "pe-ce",
       "vrf": "CLIENT_B",
       "routeur_a": "PE2",
       "interface_a": "FastEthernet0/0",
