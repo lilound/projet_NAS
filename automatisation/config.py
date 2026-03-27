@@ -147,7 +147,9 @@ def configure_core_igp_and_mpls(tn, router_name):
     router_info = get_router(router_name)
     loopback_ip = get_loopback_ip(router_name)
 
-    ospf_networks = [f"network {loopback_ip} 0.0.0.0 area 0"]
+    # Activation globale des deux mondes
+    send(tn, "mpls ip") # Pour LDP
+    send(tn, "mpls traffic-eng tunnels") # Pour RSVP
 
     for link in get_links_for_router(router_name):
         peer = link["peer"]
@@ -155,20 +157,28 @@ def configure_core_igp_and_mpls(tn, router_name):
             continue
 
         mask = mask_from_prefix(link["subnet"])
-        net_addr = get_network_address(link["subnet"])
-
         send(tn, f"interface {link['iface']}")
         send(tn, f" ip address {link['local_ip']} {mask}")
-        send(tn, " mpls ip")
+        
+        # On active les deux sur l'interface
+        send(tn, " mpls ip") # LDP
+        send(tn, " mpls traffic-eng tunnels") # RSVP
+        send(tn, " ip rsvp bandwidth 1000") 
         send(tn, " no shutdown")
         send(tn, " exit")
 
-        ospf_networks.append(f"network {net_addr} 0.0.0.3 area 0")
-
+    # Configuration OSPF avec extensions TE
     send(tn, "router ospf 1")
     send(tn, f" router-id {router_info['routeurID']}")
-    for net in ospf_networks:
-        send(tn, f" {net}")
+    send(tn, " mpls traffic-eng router-id Loopback0")
+    send(tn, " mpls traffic-eng area 0")
+    
+    # Annonce des réseaux
+    send(tn, f" network {loopback_ip} 0.0.0.0 area 0")
+    for link in get_links_for_router(router_name):
+        if is_core_link(router_name, link["peer"]):
+            net_addr = get_network_address(link["subnet"])
+            send(tn, f" network {net_addr} 0.0.0.3 area 0")
     send(tn, " exit")
 
 
@@ -298,13 +308,58 @@ def configure_router(node, router_name, router_info):
         configure_pe_vrfs(tn, router_name)
         configure_pe_ce_interfaces(tn, router_name)
         configure_pe_bgp(tn, router_name)
-
+        # À insérer dans la fonction configure_router, après la partie BGP
+        if "tunnels" in data:
+            for t_name, t_conf in data.get("tunnels", {}).items():
+                if t_conf["source"] == router_name:
+                    # 1. Configurer le chemin explicite
+                    send(tn, f"ip explicit-path name {t_conf['path_name']} enable")
+                    for hop in t_conf["hops"]:
+                        send(tn, f" next-address {hop}")
+                    send(tn, " exit")
+                    
+                    # 2. Configurer l'interface Tunnel
+                    dest_ip = get_loopback_ip(t_conf["destination"])
+                    send(tn, f"interface Tunnel{t_conf['id']}")
+                    send(tn, " ip unnumbered Loopback0")
+                    send(tn, " tunnel mode mpls traffic-eng")
+                    send(tn, f" tunnel destination {dest_ip}")
+                    send(tn, f" tunnel mpls traffic-eng path-option 1 explicit name {t_conf['path_name']}")
+                    send(tn, " tunnel mpls traffic-eng autoroute announce")
+                    send(tn, " no shutdown")
+                    send(tn, " exit")
     if router_type == "CE":
         configure_ce_router(tn, router_name)
 
     finalize_config(tn)
     tn.close()
 
+# ------------------------- Routes RSVP -------------------
+
+def configure_rsvp_tunnel(tn, remote_pe_ip, tunnel_data):
+    tunnel_id = tunnel_data["id"]
+    path_name = tunnel_data["path_name"]
+    
+    send(tn, f"interface Tunnel{tunnel_id}")
+    send(tn, " ip unnumbered Loopback0")
+    send(tn, " tunnel mode mpls traffic-eng")
+    send(tn, f" tunnel destination {remote_pe_ip}")
+    # On utilise le path défini dans le JSON au lieu de dynamic
+    send(tn, f" tunnel mpls traffic-eng path-option 1 explicit name {path_name}")
+    # INDISPENSABLE pour que le trafic BGP/VPN utilise le tunnel
+    send(tn, " tunnel mpls traffic-eng autoroute announce")
+    send(tn, " no shutdown")
+    send(tn, " exit")
+
+def configure_explicit_path(tn, tunnel_data):
+    path_name = tunnel_data["path_name"]
+    send(tn, f"ip explicit-path name {path_name} enable")
+    for hop in tunnel_data["hops"]:
+        send(tn, f" next-address {hop}")
+    send(tn, " exit")
+
+
+# ------------- LE RESTE ----------------------------------
 
 def configure_worker(router_name, router_info):
     node = Node(project_id=project.project_id, name=router_name, connector=server)
