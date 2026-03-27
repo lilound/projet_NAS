@@ -4,14 +4,12 @@
   },
   "AS": {
     "CORE": {
-      "igp": "OSPF",
       "nom_process": "CORE",
       "asnumber": "65000",
       "network": "10.0.0.0/16",
       "reflectors": ["P1", "P2"]
     },
     "CLIENT_A": {
-      "igp" : "OSPF",
       "nom_process" : "CLIENT_A",
       "asnumber": "65010",
       "network": "11.0.0.0/16"
@@ -19,10 +17,17 @@
 
     },
     "CLIENT_B":{
-      "igp" : "OSPF",
       "nom_process" : "CLIENT_B",
       "asnumber" : "65020",
       "network": "12.0.0.0/16"
+    
+    },
+
+    "CLIENT_C":{
+      "nom_process" : "CLIENT_C",
+      "asnumber" : "65030",
+      "network": "13.0.0.0/16"
+    
 
     },
 
@@ -94,6 +99,12 @@
           "loopback": "8.8.8.8/32",
           "routeurID": "8.8.8.8",
           "type": "INT"
+    },
+    "CE5" : {
+      "as" : "CLIENT_C",
+      "loopback" : "35.35.35.35/32",
+      "routeurID": "35.35.35.35",
+      "type":"CE"
     }
   },
 
@@ -171,6 +182,14 @@
       "routeur_b": "INT1",
       "interface_b": "GigabitEthernet0/0",
       "sous_res": "200.0.0.0/24"
+    },
+    {
+      "vrf": "CLIENT_C",
+      "routeur_a" : "PE1",
+      "interface_a": "GigabitEthernet4/0",
+      "routeur_b" : "CE5",
+      "interface_b": "GigabitEthernet1/0",
+      "sous_res": "13.1.0.0/30"
     }
   ],
 
@@ -184,7 +203,8 @@
       "CE1" : "11.11.11.11/32",
       "CE2" : "12.12.12.12/32",
       "CE3" : "23.23.23.23/32",
-      "CE4" : "24.24.24.24/32"
+      "CE4" : "24.24.24.24/32",
+      "CE5" : "35.35.35.35/32"
     }
   },
 
@@ -199,13 +219,19 @@
     "CLIENT_A": {
         "rd": "65000:10",
         "rt_export": "65000:10",
-        "rt_import": "65000:10"
+        "rt_import": ["65000:10","65000:30"]
     },
     "CLIENT_B": {
         "rd": "65000:20",
         "rt_export": "65000:20",
-        "rt_import": "65000:20"
+        "rt_import": ["65000:20","65000:30"]
+    },
+    "CLIENT_C": {
+        "rd": "65000:30",
+        "rt_export": "65000:30",
+        "rt_import": ["65000:10","65000:20"]
     }
+
   },
 
   "tunnels": {
