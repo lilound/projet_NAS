@@ -129,7 +129,6 @@
       "sous_res": "11.0.0.0/30"
     },
     {
-      "type" : "pe-ce",
       "vrf": "CLIENT_B",
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
@@ -138,7 +137,6 @@
       "sous_res": "12.0.0.0/30"
     },
     {
-      "type" : "pe-ce",
       "vrf": "CLIENT_A",
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
@@ -187,6 +185,20 @@
         "rd": "65000:20",
         "rt_export": "65000:20",
         "rt_import": "65000:20"
+    }
+  },
+
+  "tunnels": {
+  "TUNNEL_PE1_PE2": {
+    "source": "PE1",
+    "destination": "PE2",
+    "id": 100,
+    "path_name": "VIA_P1_P2",
+    "hops": [
+      "10.0.12.2", 
+      "10.0.23.2",
+      "10.0.24.2"
+      ]
     }
   },
   
