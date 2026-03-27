@@ -7,7 +7,8 @@
       "igp": "OSPF",
       "nom_process": "CORE",
       "asnumber": "65000",
-      "network": "10.0.0.0/16"
+      "network": "10.0.0.0/16",
+      "reflectors": ["P1", "P3"]
     },
     "CLIENT_A": {
       "igp" : "OSPF",
