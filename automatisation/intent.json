@@ -24,6 +24,13 @@
       "asnumber" : "65020",
       "network": "12.0.0.0/16"
 
+    },
+
+    "INTERNET": {
+      "igp": "NONE",
+      "nom_process": "INTERNET",
+      "asnumber": "65100",
+      "network": "200.0.0.0/24"
     }
   },
 
@@ -81,6 +88,12 @@
         "loopback": "24.24.24.24/32",
         "routeurID": "24.24.24.24",
         "type": "CE"
+    },
+    "INT1": {
+          "as": "INTERNET",
+          "loopback": "8.8.8.8/32",
+          "routeurID": "8.8.8.8",
+          "type": "INT"
     }
   },
 
@@ -151,6 +164,13 @@
       "routeur_b": "CE4",
       "interface_b": "GigabitEthernet1/0",
       "sous_res": "12.1.0.0/30"
+    },
+    {
+      "routeur_a": "PE1",
+      "interface_a": "GigabitEthernet5/0",
+      "routeur_b": "INT1",
+      "interface_b": "GigabitEthernet0/0",
+      "sous_res": "200.0.0.0/24"
     }
   ],
 
