@@ -135,7 +135,7 @@
     },
     {
       "type" : "pe-ce",
-      "vrf": "CLIENT_A",
+      "vrf": "CLIENT_B",
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE3",
@@ -144,7 +144,7 @@
     },
     {
       "type" : "pe-ce",
-      "vrf": "CLIENT_B",
+      "vrf": "CLIENT_A",
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "CE2",
