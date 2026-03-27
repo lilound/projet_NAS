@@ -1,4 +1,7 @@
 {
+  "parameters": {
+    "write" : false
+  },
   "AS": {
     "CORE": {
       "igp": "OSPF",

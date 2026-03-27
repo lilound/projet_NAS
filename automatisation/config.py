@@ -21,7 +21,6 @@ project.open()
 project.get_nodes()
 
 
-# ---------------- Utils ----------------
 
 def send(tn, cmd, delay=TELNET_DELAY):
     tn.write((cmd + "\r\n").encode("ascii", errors="ignore"))
@@ -177,7 +176,7 @@ def configure_core_igp_and_mpls(tn, router_name):
 
 def configure_pe_vrfs(tn, router_name):
     for vrf_name in get_pe_vrfs(router_name):
-        rd = rd_for(router_name, vrf_name)
+        rd = rd_for(vrf_name)
         rt = rt_for(vrf_name)
 
         send(tn, f"vrf definition {vrf_name}")
@@ -272,7 +271,8 @@ def configure_ce_router(tn, router_name):
 
 def finalize_config(tn):
     send(tn, "end")
-    send(tn, "write memory", delay=0.8)
+    if data["parameters"]["write"]:
+        send(tn, "write memory", delay=0.8)
     send(tn, "", delay=1)
 
 
