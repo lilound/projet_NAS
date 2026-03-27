@@ -93,3 +93,9 @@ Le dernier ping vérifie l'isolation : CLIENT_A ne doit pas pouvoir joindre CLIE
 
 !["](image.png "")
 
+### PARTIE 4B 
+
+rajouter un client bleu qui peut parler a vert et rouge, mais rouge ne peut parler qu'à vert et vert ne peut parler quà bleu, 
+Puis, route reflector
+puis, rsvp pr joindre l'internet global et les vpns
+avoir un code propre 
