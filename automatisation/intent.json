@@ -8,7 +8,7 @@
       "nom_process": "CORE",
       "asnumber": "65000",
       "network": "10.0.0.0/16",
-      "reflectors": ["P1", "P3"]
+      "reflectors": ["P1", "P2"]
     },
     "CLIENT_A": {
       "igp" : "OSPF",
@@ -129,12 +129,8 @@
       "sous_res": "11.0.0.0/30"
     },
     {
-<<<<<<< HEAD
-      "vrf": "CLIENT_A",
-=======
       "type" : "pe-ce",
       "vrf": "CLIENT_B",
->>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE1",
       "interface_a": "FastEthernet0/0",
       "routeur_b": "CE3",
@@ -142,12 +138,8 @@
       "sous_res": "12.0.0.0/30"
     },
     {
-<<<<<<< HEAD
-      "vrf": "CLIENT_B",
-=======
       "type" : "pe-ce",
       "vrf": "CLIENT_A",
->>>>>>> cf38ce35b079e033941b1161b4a9be71b930508b
       "routeur_a": "PE2",
       "interface_a": "GigabitEthernet3/0",
       "routeur_b": "CE2",
