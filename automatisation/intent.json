@@ -6,7 +6,8 @@
     "CORE": {
       "nom_process": "CORE",
       "asnumber": "65000",
-      "network": "10.0.0.0/16"
+      "network": "10.0.0.0/16",
+      "reflectors": ["P1", "P2"]
     },
     "CLIENT_A": {
       "nom_process" : "CLIENT_A",
@@ -211,6 +212,20 @@
         "rt_import": ["65000:10","65000:20"]
     }
 
+  },
+
+  "tunnels": {
+  "TUNNEL_PE1_PE2": {
+    "source": "PE1",
+    "destination": "PE2",
+    "id": 100,
+    "path_name": "VIA_P1_P2",
+    "hops": [
+      "10.0.12.2", 
+      "10.0.23.2",
+      "10.0.24.2"
+      ]
+    }
   },
   
   "policies": {}

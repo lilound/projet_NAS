@@ -99,3 +99,4 @@ rajouter un client bleu qui peut parler a vert et rouge, mais rouge ne peut parl
 Puis, route reflector
 puis, rsvp pr joindre l'internet global et les vpns
 avoir un code propre 
+
