@@ -13,7 +13,7 @@ Le réseau est composé de :
 - Routeurs P (coeur MPLS)
 - Routeurs PE (gestion des VRF et des clients)
 - Routeurs CE (clients)
-(- Routeur Internet INT1)
+- (Routeur Internet INT1)
 
 ## État du projet
 Implémenté : 
