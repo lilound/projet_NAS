@@ -1,30 +1,41 @@
-# projet_NAS
+# Projet NAS - Groupe 10
 
-## infos qu'on a eu en cours (tp)
+## Description
+Ce projet vise à automatiser le déploiement d'un réseau opérateur basé sur MPLS et BGP/MPLS VPN. 
+L'infrastructure permet le transport MPLS dans le coeur du réseau, l'isolation de plusieurs clients via des VRF, l'échange de routes VPN et l'automatisation complète via un script Python.
 
-* conf ne peut pas être minimaliste
-* **au moins** une chaîne de 4 routeurs, max **10 routeurs** apparement c'est pas mal
-* implémenter le pen ultimate hop ou l'observer : donc faire en sorte d'avoir une topologie qui permet ça (d'où les 4 routeurs à la chaîne)
-* on veut que le provider MPLS au milieu (avec chaîne de 4 routeurs) puisse provider un VPN à ses clients
+Le projet s'appuie sur :
+- un fichier d'intention réseau
+- un script d'automatisation
 
-entre 5 et 10 routeurs dont au moins 2 PE avec au moins 1 et 2 routeurs entre les deux qui font le lien , on peut en ajouter après pour exos bonus, 2 routeurs CE (customer edge) des AS clients liés aux PE BGP entre client et provider. MPLS dans AS provider. besoin d'aussi ospf
+## Topologie
+Le réseau est composé de :
+- Routeurs P (coeur MPLS)
+- Routeurs PE (gestion des VRF et des clients)
+- Routeurs CE (clients)
+(- Routeur Internet INT1)
 
-mpls ajouter label au pe entrée et enlever à l'avant dernier routeur (dernier avant PE sortie)
+## État du projet
+Implémenté : 
+- OSPF dans le coeur
+- MPLS + LDP
+- BGP VPNv4 entre PE
+- VRF + isolation clients
+- eBGP PE-CE
+- Automatisation du déploiement
+- Tunnel MPLS TE
 
-!["](schema.png "")
+Expérimental mais pas dans le projet :
+- Internet : configuration du routeur INT1 est partiellement définie dans le intent, l'intégration dans le routage global n'est pas terminée et n'a pas été push dans la version finale du projet.
 
-## BONUS : 
-* faire IPV6 instead of IPV4 
-* add QoS
-
-# TUTOOOOO
+## Tutoriel d’installation
 
 1. Installer Python 3.11
 
 Télécharger Python 3.11 :
 https://www.python.org/downloads/release/python-3110/
 
-Pendant l’installation, cocher “Add Python to PATH”
+Pendant l’installation, cocher "Add Python to PATH"
 
 Vérifier :
 
@@ -35,23 +46,15 @@ py -3.11 -m pip install gns3fy
 
 3. Préparer GNS3
 
-Ouvrir structure_vide
+Ouvrir structure_vide_V2.gns3 dans GNS3
 
-!["](topologie.png "")
+!["](topologie_V2.png "")
 
 5. Lancer le script
 
 Dans le dossier automatisation :
 py -3.11 config.py
-
-## les tâches et la répartition 
-
-### petit conseil de pfr
- attention, la reachability au client doit être entière : souvent les élèves se trompent et n'assurent QUE la connexion au premier lien du CE : donc bien vérifier que ça ping DANS le CE (depuis qqch qui est le PE)
-
-
-
-commande : bgp allow as in  
+  
 
 # Commandes de test 
 
@@ -93,10 +96,4 @@ Le dernier ping vérifie l'isolation : CLIENT_A ne doit pas pouvoir joindre CLIE
 
 !["](image.png "")
 
-### PARTIE 4B 
-
-rajouter un client bleu qui peut parler a vert et rouge, mais rouge ne peut parler qu'à vert et vert ne peut parler quà bleu -> ajouter un autre client et établir ça 
-Puis, route reflector
-puis, rsvp pr joindre l'internet global et les vpns
-avoir un code propre 
 
