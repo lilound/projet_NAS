@@ -37,12 +37,12 @@ https://www.python.org/downloads/release/python-3110/
 
 Pendant l’installation, cocher "Add Python to PATH"
 
-Vérifier :
+Vérifier : 
 
-py -3.11 --version
+```py -3.11 --version```
 
-2. Installer les dépendances
-py -3.11 -m pip install gns3fy
+2. Installer les dépendances : 
+```py -3.11 -m pip install gns3fy```
 
 3. Préparer GNS3
 
@@ -53,7 +53,7 @@ Ouvrir structure_vide_V2.gns3 dans GNS3
 5. Lancer le script
 
 Dans le dossier automatisation :
-py -3.11 config.py
+```py -3.11 config.py```
   
 
 # Commandes de test 
